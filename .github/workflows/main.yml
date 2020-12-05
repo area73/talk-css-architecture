@@ -16,4 +16,4 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
           PUBLISH_TO_BRANCH: main
           BASE_URL: https://area73.github.io/talk-css-architecture/
-        uses: area73/marp-action@main
+        uses: ralexander-phi/marp-action@master
