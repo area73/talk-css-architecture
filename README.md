@@ -1,1 +1,1 @@
-# talk-css-arquitecture
+# talk-css-architecture
