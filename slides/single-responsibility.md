@@ -316,4 +316,60 @@ The existing button functionality is extended using the button-small class (the 
 
 The button design now depends on its location. Changes will apply to all button blocks inside the content block.
 
+---
 
+## How to switch to BEM-style CSS
+
+To implement BEM principles in a project:
+
+* Put aside the DOM model and learn to create blocks.
+
+* Don't use ID selectors or tag selectors.
+
+* Minimize the number of nested selectors.
+
+* Use the CSS class naming convention in order to avoid name collisions and make selector names as informative and clear as possible.
+
+* Work in the terms of blocks, elements, and modifiers.
+
+* Move CSS properties of a block to modifiers if they seem likely to be changed.
+
+* Use mixes.
+
+* Divide code into small independent parts for ease of working with individual blocks.
+
+* Re-use blocks.
+
+---
+
+## Placing a block inside another block
+In the BEM methodology, a block's position on the page is set in the parent block. This allows the blocks to be independent and reusable.
+ref: https://en.bem.info/methodology/block-modification/#using-a-mix-to-change-a-block
+
+---
+
+# Code smell
+
+https://csswizardry.com/2017/02/code-smells-in-css-revisited/
+
+* @extend
+* CSS Shorthand Syntax Considered an Anti-Pattern (https://csswizardry.com/2016/12/css-shorthand-syntax-considered-an-anti-pattern/)
+ ejemplo:
+```css
+    .btn { background: red; }
+    /* Es equivalente a */
+    .btn {
+        background-image: initial;
+        background-position-x: initial;
+        background-position-y: initial;
+        background-size: initial;
+        background-repeat-x: initial;
+        background-repeat-y: initial;
+        background-attachment: initial;
+        background-origin: initial;
+        background-clip: initial;
+        background-color: red;
+    }
+```
+* Always favour the longhand. It might be more keystrokes, it might be more repetitive, it might be less DRY, but it’s more accurate.
+* Only write as much as you need and not a single bit more. Most CSS issues are caused by applying things too broadly; avoid it.
