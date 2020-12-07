@@ -11,6 +11,7 @@
     "@marp-team/marp-cli": "^0.23.0"
   },
   "scripts": {
-    "dev": "marp --preview --server ./slides"
+    "dev": "marp --preview --server ./slides",
+    "build": "marp ./slides -o output.html --theme ./slides/dracula.css"
   }
 }
