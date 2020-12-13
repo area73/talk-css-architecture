@@ -2,22 +2,46 @@
 title: CSS Architecture: Best Practices
 description: Best practices to apply in CSS/SCSS files
 theme: dracula
-paginate: true
-headingDivider: false
+paginate: false
+headingDivider: true
+---
+<style>
+strong {
+--dracula-current-line:#f1fa8c;
+color: #f1fa8c;
+}
+
+</style>
+
+<style scoped>
+section h1 {
+    text-align: center;
+    height: 100%;
+    line-height: 6;
+    font-size: 250%;
+    text-shadow: 0px 0px 118px rgba(255, 121, 198, 1);
+}
+</style>
+
+
+![bg opacity:.2](portada.png)
+# Arquitectura **CSS**
 ---
 # Índice
-* Principio de responsabilidad única
-* Principio de fuente de única verdad
-* Open / Close
-* Code smell, pitfalls y buenas prácticas
++ Principio de responsabilidad única
++ Principio de fuente de única verdad
++ Open / Close
++ Code smell, pitfalls y buenas prácticas
 ---
 # <!-- fit --> Principio de responsabilidad única (**S**OLID)
 
-El principio de responsabilidad única establece que cada clase debe tener una sola responsabilidad, y que la responsabilidad debe estar completamente encapsulada por la clase. 
+Establece que cada clase debe tener una sola responsabilidad, y que la responsabilidad debe estar completamente encapsulada por la clase. 
 
 Todos sus servicios deben estar estrechamente alineados con esa responsabilidad.
 
----
+<!-- Por eso utilizamos BEM B = BLOQUE -->
+
+--- 
 <!-- header: SRP (Principio de responsabilidad única) -->
 ## Ejemplo SRP
 
@@ -73,38 +97,7 @@ Ahora tenemos 2 clases y cada una lleva su responsabilidad única
 
 ---
 
-## Otros ejemplos
-
-```scss
-.regPlate {
-    display: inline-block;
-    padding: 5px $spacing 2px 9px;
-    min-width: $spacing * 9;
-    border: inner 1px $color-action-soft;
-    border-radius: $spacing/2;
-    color: $color-text-positive-light;
-    text-align: center;
-    font-size: 14px;
-    line-height: 16px;
-}
-```
-
----
-
-```scss
-.reportBox {
-  display: grid;
-  padding: $spacing * 2;
-  border: 1px solid $color-action-soft;
-  border-radius: $radius;
-  grid-template-columns: 50% 50%;
-  @include typography("body");
-}
-```
-
----
-
-# <!-- fit --> otro ejemplo en donde no dividimos bien el principio de responsabilidad única
+#  otro ejemplo 
 ```css
 .journey_finishReasonIcon {
   display: inline-table;
@@ -113,15 +106,29 @@ Ahora tenemos 2 clases y cada una lleva su responsabilidad única
   color: red;
   transform: translateY(1px);
 }
-.journey_finishReasonIcon-success {
-    color: green;
-  }
 ```
+```html
+<div class="journey_finishReasonIcon"> error icon</div>
+```
+
+---
 
 ```html
 <div class="journey_finishReasonIcon"> error icon</div>
 <div class="journey_finishReasonIcon journey_finishReasonIcon-success"> success icon</div>
 ```
+
+```css
+.journey_finishReasonIcon-success {
+    color: green;
+  }
+```
+```html
+<div class="journey_finishReasonIcon journey_finishReasonIcon-error"> error icon</div>
+<div class="journey_finishReasonIcon journey_finishReasonIcon-success"> success icon</div>
+```
+
+
 <!--
 * 1./ Deberíamos extraer el atributo color y crear un modificador para error. 
 
@@ -133,7 +140,7 @@ Ahora tenemos 2 clases y cada una lleva su responsabilidad única
 ---
 ## Beneficios
 - Tu CSS es mucho más DRY
-- Podemos realizar cambios de gran alcance, simplemente modificando una abstracción base una única vez.
+- Podemos realizar cambios de **gran alcance**, simplemente modificando una abstracción base **una única vez**.
 - Podemos hacer cambios más seguros porque sabemos que cuando editamos una clase solo estamos alterando una responsabilidad.
 - Podemos combinar responsabilidades para crear una variedad de componentes a partir de muchas clases abstractas.
 
@@ -142,36 +149,20 @@ Ahora tenemos 2 clases y cada una lleva su responsabilidad única
 <!-- header: SSOT (Principio de fuente de única verdad) -->
 
 # Principio de fuente de única verdad
-* SSOT es la práctica de estructurar modelos de información y esquemas de datos asociados, de manera que cada elemento de datos se domine **(o edite)** en un solo lugar.
++ SSOT es la práctica de estructurar modelos de información y esquemas de datos asociados, de manera que cada elemento de datos se domine **(o edite)** en un solo lugar.
 
-* Los sistemas SSOT proporcionan datos que son auténticos, relevantes y **referenciables**.
++ Los sistemas SSOT proporcionan datos que son auténticos, relevantes y **referenciables**.
 
 ---
 
 # principio abierto / cerrado (S**O**LID) 
 
-Cualquier elemento HTML en una página debe estar abierto para su extensión mediante modificadores, pero cerrado para cambios.
+Cualquier elemento HTML en una página debe estar **abierto para su extensión** mediante modificadores, pero **cerrado para cambios**.
 
 Deberíamos poder desarrollar nuevas implementaciones de CSS sin necesidad de cambiar las existentes.
 
 ---
-
-```html
-    <button class="button">...</button>
-    <button class="button">...</button>
-```
-
-```css
-.button {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    font-size: 11px;
-    line-height: 20px;
-}
-```
-Según el principio abierto / cerrado, lo que haremos será ampliar la definición del botón.
-
----
+### Uso de modificador 
 
 ```html
     <button class="button">...</button>
@@ -204,12 +195,12 @@ La funcionalidad del botón existente se amplía utilizando la clase button-smal
     font-size: 11px;
     line-height: 20px;
 }
-.content .button {
+.modal .button {
     font-size: 13px;
     line-height: 24px;
 }
 ```
-El diseño del botón ahora depende de su ubicación. Los cambios se aplicarán a todos los bloques de botones dentro del bloque de contenido.
+El diseño del botón ahora depende de su ubicación. Los cambios se aplicarán a todos los bloques de botones dentro de una modal
 
 ---
 <!-- header: '' -->
@@ -222,16 +213,15 @@ El diseño del botón ahora depende de su ubicación. Los cambios se aplicarán 
 
 * Minimizar el número de selectores anidados.
 
-* Utilice la convención de nomenclatura de clases CSS para evitar colisiones de nombres y hacer que los nombres de los selectores sean lo más informativos y claros posible.
+* Utilizar la convención de nomenclatura de clases CSS para evitar colisiones de nombres y hacer que los nombres de los selectores sean lo más informativos y claros posible.
 
-* Trabajar en términos de bloques, elementos y modificadores.
 
 ---
 <!-- header: Cómo implementar principios BEM en nuestros proyectos -->
 
 * Mover las propiedades CSS de un bloque a **modificadores** si parece probable que se modifiquen.
 
-* Utilice mezclas  **MIX BEM** (mixings funcionales)
+* Utilizar mezclas  **MIX BEM** (mixings funcionales)
 
 * Dividir el código en pequeñas partes independientes para facilitar el trabajo con bloques individuales.
 
@@ -303,12 +293,7 @@ margin: 30px;               /* Padding */
 position: relative;
 }
 ```
-```html
-<!-- `footer` block -->
-<footer class="footer">
-    <button class="button">...</button>
-</footer>
-```
+
 <!--
 * En este ejemplo, la geometría externa y el posicionamiento del bloque de botones se configuran mediante el elemento header__button. 
 
@@ -320,11 +305,11 @@ position: relative;
 # Code smell & pitfalls 
 
 #### uso de @extend 💩
-   * Altera el orden de los sources
-   * Crea agrupaciones incómodas en el código, juntando selectores no relacionados.
-   * Es muy codicioso, @extendiendo cada instancia de un tema dado, no solo el que realmente querías ...
-   * Puede descontrolarse mucho y muy rápido. 
-   * El uso de @extend está desaconsejado. Usar Mixins de BEM 
+   + Altera el orden de los sources
+   + Crea agrupaciones incómodas en el código, juntando selectores no relacionados.
+   + Puede descontrolarse mucho y muy rápido. 
+   + El uso de @extend está desaconsejado. 
+   + **Usar Mixins de BEM** 
 
 ---
 <!-- header: 'code smell and pitfalls' --> 
@@ -342,23 +327,24 @@ position: relative;
 
 ```css
 
-.back-arrow-button:before, .button-more-icon:before, .contextualMenu-handler:before, 
-.data-ico-after:after, .data-ico:before,.detailOverview .driverOverview_rating:after,
-.driverJourneyStatus-ongoingJourney:before, .driverJourneyStatus-searching:before, 
-.dropdown .select-button:after, .dropdown-button:after, .dropdown-overlay-close:before,
-.filterField .input-reset:before, .filterField-search:before,.journey-details-call:before,
-.journey-details-list .call-tooltip:before,.journey-panel .destination-icon:before,
-.journey-panel .origin-icon:before,.journey-panel .vehicle-icon:before,.journey-state-collapsible:before,.mainmenu-logo:before,.map-direction:before,.rating .star.half:after,.rating .star:before,.reminderNotification-message:before,.statusBadge.iconInfo:before,.table-col-ellipsisWrapper.table-m-icon:before,.table-col-userState:before,.table-fileIcon:before,.table-tooltipIcon:before,.tableListing-actions-addAction:before,.tooltip-innerWrapper:before,.tooltip-tip:before,.topNotification-close:before,.topNotification-message:before {
+.back-arrow-button:before, .button-more-icon:before, .contextualMenu-handler:before, .data-ico-after:after, 
+.data-ico:before,.detailOverview .driverOverview_rating:after, .driverJourneyStatus-ongoingJourney:before,
+.driverJourneyStatus-searching:before, .dropdown .select-button:after, .dropdown-button:after, .dropdown-overlay-close:before,
+.filterField .input-reset:before, .filterField-search:before,.journey-details-call:before, 
+.journey-details-list .call-tooltip:before,.journey-panel .destination-icon:before, .journey-panel .origin-icon:before,
+.journey-panel .vehicle-icon:before,.journey-state-collapsible:before, .mainmenu-logo:before, .map-direction:before,
+.rating .star.half:after,.rating .star:before, .reminderNotification-message:before,.statusBadge.iconInfo:before,
+.table-col-ellipsisWrapper.table-m-icon:before, .table-col-userState:before,.table-fileIcon:before,
+.table-tooltipIcon:before,.tableListing-actions-addAction:before, .tooltip-innerWrapper:before,.tooltip-tip:before,
+.topNotification-close:before, .topNotification-message:before {
 
 ```
-🚫 Fuente de única verdad
-
 ---
 #### Uso de @includes (SCSS) 💩
-* son opacos
-* nos hacen pensar de forma erronea (en vez de componer , heredamos)
-* favorecer el uso de mixins de BEM en vez de  @includes
-* hay excepciones en los archivos core o en funciones que usen estos includes
++ son opacos
++ nos hacen pensar de forma erronea (en vez de componer , heredamos)
++ hay excepciones en los archivos core o en funciones que usen estos includes
++ favorecer el **uso de mixins de BEM** en vez de  @includes
 
 ---
 `@include typography("body");`
@@ -369,18 +355,18 @@ position: relative;
  margin-left: 16px;
 }
 /* se traduce en esto */
-.driverSuggestionRow .driverSuggestionRow_driverName {
+.driverSuggestionRow_driverName {
  margin-left: 16px
 }
 @media all {
- .driverSuggestionAutocomplete_noResults,.driverSuggestionRow .driverSuggestionRow_driverName {
+ .driverSuggestionAutocomplete_noResults, .driverSuggestionRow_driverName {
   letter-spacing: -.01em;
   font-size: .875rem;
   line-height: 1.43
  }
 }
 @media(max-width:47.99em) {
- .driverSuggestionAutocomplete_noResults,.driverSuggestionRow .driverSuggestionRow_driverName {
+ .driverSuggestionAutocomplete_noResults,.driverSuggestionRow_driverName {
   letter-spacing: -.01em;
   font-size: 1rem;
   line-height: 1.5
@@ -423,13 +409,52 @@ ya tenemos unas clases util 🥳
         background-color: red;
     }
 ```
----
+<!--
 * Siempre favorecer la forma explícita. Será más texto , más repetitivo menos DRY pero es más preciso 
+
 * Escribir sólo lo que necesitemos. La mayoría de los problemas de CSS se deben al uso excesivo de reglas
+
 * Existen excepciones por ejemplo en margin y padding. 
+
 * No utilizar la forma abreviada de 3 datos (padding: t l b)
-* lo mismo pasa con la propiedad `flex:100% --> flex: flex-grow flex-shrink flex-basis`
+
+* lo mismo pasa con la propiedad `flex:100% ==> flex: flex-grow flex-shrink flex-basis`
+-->
+
 ---
+#### Dónde escribir el código 🤔
+
++ Principio de fuente de única verdad
+
+![w:100%](sst-final.png)
+
+
+---
+
+#### Un ejemplo más cercano
+```css
+.btn { [styles] }
+.modal .btn { font-size: 0.75em; }
+```
+
++ Debemos intentar agrupar nuestros estilos basados en el sujeto (es decir, el selector clave). 
+  
++ En este ejemplo, el sujeto es .btn: eso es lo que realmente nos importa. 
+
++ .modal es puramente un contexto para .btn, por lo que no le estamos aplicando ningún estilo.
+
+---
+<!--
+* Es mucho más conveniente tener el contexto de todos nuestros botones en un solo lugar. Si quiero obtener una buena descripción general de todos los estilos de botones en mi proyecto, debería esperar solo tener que abrir un .buttons.scss, y no una docena de archivos más.
+
+* Esto hace que sea mucho más fácil mover todos los estilos de botones a un nuevo proyecto, pero lo que es más importante, alivia la sobrecarga cognitiva.
+-->
++ Como regla general, nos podemos preguntar: ¿estoy diseñando x o estoy diseñando y? Si la respuesta es x, entonces el CSS debería vivir en x.css; si la respuesta es y, debería vivir en y.css.
+
++ La alternativa a SSOT en el caso anterior sería **escribir BEM MIX**
+
+---
+
 #### Selectores claves apareciendo en más de un sitio  💩
 ```css
 .btn {}
@@ -439,43 +464,12 @@ ya tenemos unas clases util 🥳
 .page aside .btn {}
 nav .btn {}
 ```
-* no hay un SSOT en donde referenciar cómo se comporta mi botón 🥺
-* Existen muchas mutaciones de btn 👿
-* Solución: Usar modificadores ✅
++ no hay un SSOT en donde referenciar cómo se comporta mi botón 🥺
++ Existen muchas mutaciones de btn 👿
++ Solución: Usar modificadores ✅
 
 ---
 
-#### Una clase que aparece en otro fichero de componente 🤔
-
-![w:100%](sst-final.png)
-
-##### Principio de fuente de única verdad
-
---- 
-
-#### Un ejemplo más cercano
-```css
-.btn { [styles] }
-.modal .btn { font-size: 0.75em; }
-```
-
-* Debemos intentar agrupar nuestros estilos basados en el sujeto (es decir, el selector clave). 
-  
-* En este ejemplo, el sujeto es .btn: eso es lo que realmente nos importa. 
-
-* .modal es puramente un contexto para .btn, por lo que no le estamos aplicando ningún estilo.
-
----
-<!--
-* Es mucho más conveniente tener el contexto de todos nuestros botones en un solo lugar. Si quiero obtener una buena descripción general de todos los estilos de botones en mi proyecto, debería esperar solo tener que abrir un .buttons.scss, y no una docena de archivos más.
-
-* Esto hace que sea mucho más fácil mover todos los estilos de botones a un nuevo proyecto, pero lo que es más importante, alivia la sobrecarga cognitiva.
--->
-* Como regla general, nos podemos preguntar: ¿estoy diseñando x o estoy diseñando y? Si la respuesta es x, entonces el CSS debería vivir en x.css; si la respuesta es y, debería vivir en y.css.
-
-* La alternativa a SSOT en el caso anterior sería escribir BEM MIX
-
----
 
 #### MIX BEM
 
@@ -498,7 +492,7 @@ nav .btn {}
 ```
 ---
 
-* Esto se denomina una mezcla BEM (MIX BEM), en la que introducimos una tercera clase nueva para referirnos a un botón que pertenece a un modal. 
++ Esto se denomina una mezcla BEM (MIX BEM), en la que introducimos una tercera clase nueva para referirnos a un botón que pertenece a un modal. 
 * Esto evita la cuestión de dónde viven las cosas 
 * Reduce la especificidad al evitar el anidamiento
 * previene la mutación al evitar repetir la clase .btn nuevamente.
@@ -506,7 +500,7 @@ nav .btn {}
 ---
 #### Números mágicos 💩
 
-* tenemos muchos magic numbers en el código por ejemplo en los paddings
++ tenemos muchos magic numbers en el código por ejemplo en los paddings
 
 * `padding: $spacing * 2` sigue siendo un número mágico y no me aporta ninguna información 🤷‍ 
 * Si el pading fuera 0 ¿debería hacer => `padding: $spacing * 0` 🤮
@@ -514,78 +508,37 @@ nav .btn {}
 * esto es consecuencia de no tener definido un ritmo vertical en la aplicación 🥺
 
 --- 
-8. Qualified selectors
-   
+#### Selectores cualificados 💩
 ```css
 ul.nav {}
 a.button {}
 div.header {}
 ```
-
-Basically, selectors who are needlessly prepended by an element. These are bad news because:
-
-* They totally inhibit reusability on another element.
-* They increase specificity.
-* They increase browser workload (decreasing performance).
-
-9. Hard-coded/absolute values
-```css
- h1 {
-   font-size: 24px;
-   line-height: 32px;
-   }
-```
-  
-line-height: 32px; here is not cool, it should be line-height: 1.333…
-
-Line heights should always be set relatively in order to make them more forgiving and flexible. 
-If you ever change the font-size of a h1, you want to know that your line-height will track it. 
-
-10. Reactive !important
-    
-!important is fine. It’s fine and it’s a, well, important tool. However, !important should only be used in certain circumstances.
-
-!important should only ever be used proactively, not reactively.
-
-By this I mean that there are times when you know you will always, always want a style to take precedence, and you will know this up front.
-
-For example, you know that you will always want errors to be red, so this rule is totally fine:
-```css
-.error-text {
-color: #c00!important;
-}
-```
-
-
-Bibliografía: 
-* https://csswizardry.com/2015/06/contextual-styling-ui-components-nesting-and-implementation-detail/
-* SRP: https://csswizardry.com/2012/04/the-single-responsibility-principle-applied-to-css/
-* MIX BEM: https://en.bem.info/methodology/quick-start/#mix
-* css:display https://hacks.mozilla.org/2019/10/the-two-value-syntax-of-the-css-display-property/
-* Composing blocks: https://en.bem.info/methodology/block-modification/#using-a-mix-to-change-a-block
-* code smell: https://csswizardry.com/2017/02/code-smells-in-css-revisited/
-* Mix Vs @extend: https://csswizardry.com/2016/02/mixins-better-for-performance/
-* Shorthand anti-pattern: https://csswizardry.com/2016/12/css-shorthand-syntax-considered-an-anti-pattern/
++ Inhiben totalmente la reutilización en otro elemento.
++ Aumentan la especificidad.
++ Aumentan la carga de trabajo del navegador (disminuyen el rendimiento).
 
 ---
 
-
-### <!-- fit --> No usar comas para múltiples selectores
+### <!-- fit --> No usar comas para múltiples selectores 🤮
 
 ![bg left](multiple-selectors.png)
 <!-- 
 formField_placeholder, formField_input, formField_textarea
 -->
-* 2 fuentes de verdad
-* Difícil de leer
-* difícil de mantener
++ 2 fuentes de verdad
++ Difícil de leer
++ difícil de mantener
 
 ---
 
-Modificadores de clases `is-* , has-*` , no se aconseja en [BEM](http://getbem.com/faq/#why-the-modifier-classes-are-prefixed).<br>Mejor usar prefijo de clase
+#### <!-- fit --> Modificadores de clases `is-* , has-*` , no se aconseja en [BEM](http://getbem.com/faq/#why-the-modifier-classes-are-prefixed)
 
-Debido a que podemos usar mixins esto llevaría a :
+Mejor usar prefijo de clase
+
 ```HTML
+<div class="block">Lorem Ipsum</div>
+<div class="block is-important">Lorem Ipsum</div>
 <div class="block is-important news">Lorem Ipsum</div>
 ```
 ```css
@@ -601,6 +554,46 @@ Al aplicar el modificador como usa el mismo nombre en los 2 bloques esto hace qu
 
 ---
 
-Poner el ejemplo de typography
+<!-- header: '' --> 
+# Takeaways 🌟
 
-Buscar otrs ejemplos de mix
+* SRP , SSOT ,O/C  👑
+* Utilizar modificadores 🤴
+* Componer con Mixins 🤴
+
+* #### Cómo ordenar nuestros archivos fuentes 
+* ... to be continue
+
+---
+
+Bibliografía:
++ [Contextual styling](https://csswizardry.com/2015/06/contextual-styling-ui-components-nesting-and-implementation-detail/)
++ [SRP](https://csswizardry.com/2012/04/the-single-responsibility-principle-applied-to-css/)
++ [MIX BEM](https://en.bem.info/methodology/quick-start/#mix)
++ [css:display](https://hacks.mozilla.org/2019/10/the-two-value-syntax-of-the-css-display-property/)
++ [Composing blocks](https://en.bem.info/methodology/block-modification/#using-a-mix-to-change-a-block)
++ [code smell](https://csswizardry.com/2017/02/code-smells-in-css-revisited/)
++ [Mix Vs @extend](https://csswizardry.com/2016/02/mixins-better-for-performance/)
++ [Shorthand anti-pattern](https://csswizardry.com/2016/12/css-shorthand-syntax-considered-an-anti-pattern/)
++ [BEM why-the-modifier-classes-are-prefixed](http://getbem.com/faq/#why-the-modifier-classes-are-prefixed)
+
+---
+<style>
+p {
+    text-align: center;
+    font-size: 900%;
+    line-height: 0;
+    margin: 72px !important;
+}
+</style>
+
+# <!-- fit --> Merry Christmas
+🎅
+
+
+---
+
+
+
+
+
