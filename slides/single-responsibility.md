@@ -578,7 +578,8 @@ Bibliografía:
 + [BEM why-the-modifier-classes-are-prefixed](http://getbem.com/faq/#why-the-modifier-classes-are-prefixed)
 
 ---
-<style>
+
+<style scoped>
 p {
     text-align: center;
     font-size: 900%;
@@ -589,9 +590,6 @@ p {
 
 # <!-- fit --> Merry Christmas
 🎅
-
-
----
 
 
 

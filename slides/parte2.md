@@ -1,4 +1,10 @@
 ---
+title: CSS Architecture: Best Practices
+description: Best practices to apply in CSS/SCSS files
+theme: dracula
+paginate: false
+headingDivider: true
+---
 
 #### valores Hard-coded/absolute
 ```css
