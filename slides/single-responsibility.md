@@ -548,6 +548,10 @@ Mejor usar prefijo de clase
 .news { font-size: 14px;}
 .news.is-important {color:red;}
 ```
+```HTML
+<InputField fieldWrapperClass="formField filterField has-leadingIcon"></InputField>
+```
+
 <!--
 Al aplicar el modificador como usa el mismo nombre en los 2 bloques esto hace que se apliquen los 2 modificadores
 -->

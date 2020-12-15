@@ -32,3 +32,9 @@ headingDivider: true
 color: #cc0000 !important;
 }
 ```
+
+---
+
+BEM  OOCSS  SMACSS  Atomic CSS  MCSS  ITCSS
+
+[Normalize Vs Reset](https://medium.com/@elad/normalize-css-or-css-reset-9d75175c5d1e)
