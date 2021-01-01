@@ -1,6 +1,6 @@
 ---
-title: CSS Architecture: Best Practices
-description: Best practices to apply in CSS/SCSS files
+title: Arquitectura CSS : Buenas prácticas
+description: Principio de Responsabilidad única (SRP), principio de fuente de única verdad (SSOT) y principio de Abierto cerrado (O/C)
 theme: dracula
 paginate: false
 headingDivider: true

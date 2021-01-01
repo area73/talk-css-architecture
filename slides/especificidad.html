@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prueba de orden de carga de los ficheros</title>
+    <link rel="preload" as="style"  href="style01.css">
+    <link rel="stylesheet" href="style01.css" media="print" onload="this.media='all'">
+
+    <style>
+        div {
+            padding: 50px;
+            border: 20px solid;
+            width: auto;
+            background-color: blue;
+        }
+        div:after {
+            color:blue;
+            content: " initial load ";
+            padding:10px;
+            background-color: #ffdf78;
+        }
+    </style>
+
+
+
+    <!-- link rel="stylesheet" href="style01.css" media="print"
+    onload="this.media='all'" -->
+    <!-- link rel="preload" as="style"  href="style01.css">
+    <link rel="stylesheet"  href="style01.css" -->
+
+
+</head>
+<body>
+
+<p>Who rules?</p>
+<ol>
+    <li>&lt;style&gt; Vs Inline => <strong>inline</strong>  </li>
+    <li>&lt;style&gt; aal final del HTML Vs Inline =>
+        <strong>inline</strong>
+    </li>
+    <li>external &lt;link&gt; (cualquier tipo , preload, asíncrono, etc)
+        <strong>antes</strong> &lt;style&gt; =><strong>&lt;style&gt;</strong></li>
+    <li>external &lt;link&gt; (cualquier tipo , preload, asíncrono, etc) <strong>despues</strong> &lt;style&gt; =>
+    <strong>&lt;link&gt;</strong></li>
+
+
+
+
+</ol>
+<div>&nbsp;</div>
+</body>
+</html>
