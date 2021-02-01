@@ -25,7 +25,7 @@ section h1 {
 
 
 ![bg opacity:.2](portada.png)
-# Arquitectura **CSS**
+# Arquitectura **CSS (SRP, SSOT, O/C )**
 ---
 # Índice
 + Principio de responsabilidad única
